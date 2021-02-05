@@ -1,0 +1,13 @@
+- method: GET
+  path: test/employees
+  status_code: 200
+  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }'
+- method: GET
+  path: test/info
+  status_code: 200
+  media_type: text/plain
+  content: Success
+- method: POST
+  path: test/employee
+  status_code: 201
+
