@@ -1,0 +1,8 @@
+version: '3'
+services:
+  apyr:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./endpoints.yaml:/apyr/endpoints.yaml"

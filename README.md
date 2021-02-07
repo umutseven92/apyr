@@ -19,6 +19,8 @@
 git clone https://github.com/umutseven92/apyr.git
 ```
 
+### Via poetry
+
 2. Install [poetry](https://python-poetry.org/docs/#installation).
 3. Install dependencies;
 
@@ -31,11 +33,17 @@ poetry install
 5. Run apyr;
 
 ```bash
-cd apyr
 poetry run apyr
 ```
 
-By default, apyr will run on `localhost:8000`.
+### Via Docker
+
+```bash
+cd apyr
+docker-compose up --build -d
+```
+
+By default, apyr will run on `0.0.0.0:8000`. No need to restart after editing `endpoints.yaml`- it's all taken care of!
 
 ## Configuration
 
@@ -71,23 +79,14 @@ it.
 
 ```bash
 ~ λ curl 0.0.0.0:8000/test/employees -v
-*   Trying 0.0.0.0...
-* TCP_NODELAY set
-* Connected to 0.0.0.0 (127.0.0.1) port 8000 (#0)
 > GET /test/employees HTTP/1.1
-> Host: 0.0.0.0:8000
-> User-Agent: curl/7.64.1
-> Accept: */*
 > 
 < HTTP/1.1 200 OK
-< date: Sun, 07 Feb 2021 19:10:35 GMT
 < server: uvicorn
 < content-length: 52
 < content-type: application/json
 < 
-* Connection #0 to host 0.0.0.0 left intact
 { "first_name": "Geoffrey", "last_name": "Greeley" }
-* Closing connection 0
 ```
 
 ## Functions

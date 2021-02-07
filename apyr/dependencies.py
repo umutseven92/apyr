@@ -15,8 +15,6 @@ FUNCTIONS = [
 
 
 class EndpointsRepo:
-    def __init__(self):
-        self._load_endpoints()
 
     def _load_endpoints(self):
         base_dir = get_project_root()
@@ -26,8 +24,7 @@ class EndpointsRepo:
 
         self.endpoints = [Endpoint(**endpoint) for endpoint in endpoints]
 
-    @staticmethod
-    def _check_for_functions(content: str) -> str:
+    def _check_for_functions(self, content: str) -> str:
         for function in FUNCTIONS:
             full_fun_name = f"%{function.name}%"
             if full_fun_name in content:
@@ -37,6 +34,8 @@ class EndpointsRepo:
         return content
 
     def get_response(self, path: str, method: str) -> Response:
+        self._load_endpoints()
+
         def _filter_endpoints(endpoint: Endpoint):
             return endpoint.path == path and endpoint.method.lower() == method.lower()
 
