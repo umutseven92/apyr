@@ -4,9 +4,9 @@ import names
 import yaml
 from starlette.responses import Response
 
-from exceptions import TooManyEndpointsException, NoEndpointsException
-from models import Endpoint, ContentFunction
-from utils import get_project_root
+from apyr.exceptions import TooManyEndpointsException, NoEndpointsException
+from apyr.models import ContentFunction, Endpoint
+from apyr.utils import get_project_root
 
 FUNCTIONS = [
     ContentFunction(name="random_first_name", returns=names.get_first_name),

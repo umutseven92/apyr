@@ -6,10 +6,14 @@ from pydantic import BaseModel
 
 
 class Method(str, Enum):
-    get = ("GET",)
-    post = ("POST",)
-    put = ("PUT",)
+    get = "GET"
+    head = "HEAD"
+    post = "POST"
+    put = "PUT"
     delete = "DELETE"
+    options = "OPTIONS"
+    trace = "TRACE"
+    patch = "PATCH"
 
 
 class Endpoint(BaseModel):

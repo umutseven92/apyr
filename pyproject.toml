@@ -8,6 +8,8 @@ homepage = "https://github.com/umutseven92/apyr"
 repository = "https://github.com/umutseven92/apyr"
 keywords = ["api", "mock", "fastapi"]
 authors = ["Umut Seven <umutseven92@gmail.com>"]
+maintainers = ["Umut Seven <umutseven92@gmail.com>"]
+documentation = "https://github.com/umutseven92/apyr/blob/master/README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -22,3 +24,9 @@ pylint = "^2.6.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+issues = "https://github.com/umutseven92/apyr/issues"
+
+[tool.poetry.scripts]
+apyr = "apyr.main:run"
