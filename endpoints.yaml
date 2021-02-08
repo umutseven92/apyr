@@ -1,13 +1,36 @@
+# A GET method that returns a list of employees.
 - method: GET
   path: test/employees
   status_code: 200
-  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }'
+  content: >
+    [
+      { "first_name": "Peter", "last_name": "Venkman" },
+      { "first_name": "Ray", "last_name": "Stantz" },
+      { "first_name": "Egon", "last_name": "Spengler" },
+    ]
+# A GET method that returns an employee.
+# Take note of the two %functions%- the employee's first and last names will be random at every response.
 - method: GET
-  path: test/info
+  path: test/employee/2
   status_code: 200
-  media_type: text/plain
-  content: Success
+  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }'
+# A POST method that returns a 500. Great for testing error pages.
 - method: POST
   path: test/employee
-  status_code: 201
+  media_type: text
+  status_code: 500
+  content: An unexpected error occured while creating the employee.
+# A GET method that returns an HTML page.
+- method: GET
+  path: test/help
+  status_code: 200
+  media_type: text/html
+  content: >
+    <!DOCTYPE html>
+     <html>
+     <body>
+     <h1>I've quit better jobs than this.</h1>
+     <p>Ghostbusters, whaddya want.</p>
+     </body>
+     </html>
 

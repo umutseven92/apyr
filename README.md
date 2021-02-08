@@ -1,39 +1,28 @@
 # apyr
 
-## What is it?
+**apyr** is a simple & easy to use mock API server.
 
-* apyr is a simple & easy way to mock your APIs.
-* You define your endpoints in a simple .yaml file- what you want the path to be, what you want it to return and so on.
+It's great for front-end development when your API is not ready, or when you are prototyping an API. It's also very
+useful for demos & hackathons.
 
-## Why?
+## Installation
 
-* Great for front-end development when your API is not ready
-* Great for demos & hackathons
-* Great for prototyping an API
-
-## Getting started
-
-1) Clone the project;
+* Clone the project;
 
 ```bash
 git clone https://github.com/umutseven92/apyr.git
 ```
 
+* Edit `endpoints.yaml` with your endpoints (details below).
+
 ### Via poetry
 
-2. Install [poetry](https://python-poetry.org/docs/#installation).
-3. Install dependencies;
+* Install [poetry](https://python-poetry.org/docs/#installation).
 
 ```bash
 cd apyr
-poetry install
-```
-
-4. Edit `endpoints.yaml` with your endpoints (details below)
-5. Run apyr;
-
-```bash
-poetry run apyr
+poetry install # Install dependencies
+poetry run apyr # Run apyr
 ```
 
 ### Via Docker
@@ -43,7 +32,7 @@ cd apyr
 docker-compose up --build -d
 ```
 
-By default, apyr will run on `0.0.0.0:8000`. No need to restart after editing `endpoints.yaml`- it's all taken care of!
+By default, apyr will run on `0.0.0.0:8000`.
 
 ## Configuration
 
@@ -61,25 +50,50 @@ it.
 ### Example endpoints.yaml
 
 ```yaml
+# A GET method that returns a list of employees.
 - method: GET
   path: test/employees
   status_code: 200
-  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }' # See functions below
+  content: >
+    [
+      { "first_name": "Peter", "last_name": "Venkman" },
+      { "first_name": "Ray", "last_name": "Stantz" },
+      { "first_name": "Egon", "last_name": "Spengler" },
+    ]
+# A GET method that returns an employee.
+# Take note of the two %functions%- the employee's first and last names will be random at every response.
 - method: GET
-  path: test/info
+  path: test/employee/2
   status_code: 200
-  media_type: text/plain
-  content: Success
+  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }'
+# A POST method that returns a 500. Great for testing error pages.
 - method: POST
   path: test/employee
-  status_code: 201
+  media_type: text
+  status_code: 500
+  content: An unexpected error occured while creating the employee.
+# A GET method that returns an HTML page.
+- method: GET
+  path: test/help
+  status_code: 200
+  media_type: text/html
+  content: >
+    <!DOCTYPE html>
+     <html>
+     <body>
+     <h1>I've quit better jobs than this.</h1>
+     <p>Ghostbusters, whaddya want.</p>
+     </body>
+     </html>
 ```
 
 ### Example usage
 
+An example of making a `curl` request to our first endpoint:
+
 ```bash
-~ λ curl 0.0.0.0:8000/test/employees -v
-> GET /test/employees HTTP/1.1
+~ λ curl 0.0.0.0:8000/test/employee/2 -v
+> GET /test/employee/2 HTTP/1.1
 > 
 < HTTP/1.1 200 OK
 < server: uvicorn
@@ -89,12 +103,16 @@ it.
 { "first_name": "Geoffrey", "last_name": "Greeley" }
 ```
 
+No need to restart apyr after editing `endpoints.yaml`- it's all taken care of!
+
 ## Functions
 
 apyr supports different kinds of functions inside the content parameter.
 
 Currently supported functions are:
 
-* `%random_first_name%`: Will be replaced by a random first name
-* `%random_last_name%`: Will be replaced by a random last name
+| Name | Description |
+| :--- | :--- |
+| `%random_first_name%` | Will be replaced by a random first name | 
+| `%random_last_name%` | Will be replaced by a random last name |
 
