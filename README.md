@@ -1,4 +1,4 @@
-# apyr
+# apyr ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/umutseven92/apyr?label=version&style=flat-square)
 
 **apyr** (all lowercase) is a simple & easy to use mock API server.
 
