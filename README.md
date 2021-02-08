@@ -1,6 +1,6 @@
 # apyr
 
-**apyr** is a simple & easy to use mock API server.
+**apyr** (all lowercase) is a simple & easy to use mock API server.
 
 It's great for front-end development when your API is not ready, or when you are prototyping an API. It's also very
 useful for demos & hackathons.
@@ -32,7 +32,7 @@ cd apyr
 docker-compose up --build -d
 ```
 
-By default, apyr will run on `0.0.0.0:8000`.
+By default, **apyr** will run on `0.0.0.0:8000`.
 
 ## Configuration
 
@@ -42,10 +42,10 @@ it.
 | Syntax      | Required | Default | Description |
 | :--- | :---: | :--- | :-------- |
 | `method`      | ✅       | | [HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) of the endpoint | |
-| `path`        | ✅       | | Path to the endpoint | |
+| `path`        | ✅       | | Path to the endpoint, appended to the base URL | |
 | `status_code` | ✅       | | [Status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) of the response |
 | `media_type`  | ❌       | `application/json` | [Mime Type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#important_mime_types_for_web_developers) of the response |
-| `content`     | ❌       | | Body of the response|
+| `content`     | ❌       | | Body of the response |
 
 ### Example endpoints.yaml
 
@@ -89,7 +89,7 @@ it.
 
 ### Example usage
 
-An example of making a `curl` request to our first endpoint:
+An example of making a `curl` request to our second endpoint defined above:
 
 ```bash
 ~ λ curl 0.0.0.0:8000/test/employee/2 -v
@@ -103,11 +103,11 @@ An example of making a `curl` request to our first endpoint:
 { "first_name": "Geoffrey", "last_name": "Greeley" }
 ```
 
-No need to restart apyr after editing `endpoints.yaml`- it's all taken care of!
+No need to restart **apyr** after editing `endpoints.yaml`- it's all taken care of!
 
 ## Functions
 
-apyr supports different kinds of functions inside the content parameter.
+**apyr** supports different kinds of functions inside the content parameter.
 
 Currently supported functions are:
 
