@@ -1,0 +1,4 @@
+[pydocstyle]
+inherit = false
+ignore = D100,D101,D102,D103,D104,D107,D213
+match = .*\.py

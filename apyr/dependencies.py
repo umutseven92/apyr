@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 import names
@@ -6,7 +7,7 @@ from starlette.responses import Response
 
 from apyr.exceptions import TooManyEndpointsException, NoEndpointsException
 from apyr.models import ContentFunction, Endpoint
-from apyr.utils import get_project_root
+from apyr.utils import get_project_root, get_digest
 
 FUNCTIONS = [
     ContentFunction(name="random_first_name", returns=names.get_first_name),
@@ -16,15 +17,19 @@ FUNCTIONS = [
 
 class EndpointsRepo:
 
+    def __init__(self):
+        self.last_hash: str = ""
+        self.endpoints: List[Endpoint] = []
+        self.endpoints_path = get_project_root().joinpath("endpoints.yaml")
+
     def _load_endpoints(self):
-        base_dir = get_project_root()
-        endpoints_path = base_dir.joinpath("endpoints.yaml")
-        stream = open(endpoints_path, "r")
+        stream = open(self.endpoints_path, "r")
         endpoints = yaml.full_load(stream)
 
         self.endpoints = [Endpoint(**endpoint) for endpoint in endpoints]
 
-    def _check_for_functions(self, content: str) -> str:
+    @staticmethod
+    def _check_for_functions(content: str) -> str:
         for function in FUNCTIONS:
             full_fun_name = f"%{function.name}%"
             if full_fun_name in content:
@@ -33,8 +38,22 @@ class EndpointsRepo:
 
         return content
 
+    def _check_if_file_changed(self, path: Path) -> bool:
+        """Check to see if the file changed.
+
+        We hash the file and compare it to the previous hash.
+        """
+        new_hash = get_digest(str(path))
+        if new_hash != self.last_hash:
+            self.last_hash = new_hash
+            return True
+
+        return False
+
     def get_response(self, path: str, method: str) -> Response:
-        self._load_endpoints()
+        # Do not reload endpoints if the file has not changed
+        if self._check_if_file_changed(self.endpoints_path):
+            self._load_endpoints()
 
         def _filter_endpoints(endpoint: Endpoint):
             return endpoint.path == path and endpoint.method.lower() == method.lower()
