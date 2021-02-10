@@ -61,11 +61,16 @@ it.
       { "first_name": "Egon", "last_name": "Spengler" },
     ]
 # A GET method that returns an employee.
-# Take note of the two %functions%- the employee's first and last names will be random at every response.
+# Take note of the two %functions%- the employee's first name, last name and age will be random at every response.
 - method: GET
   path: test/employee/2
   status_code: 200
-  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }'
+  content: >
+    {
+      "first_name": "%random_first_name(female)%",
+      "last_name": "%random_last_name()%",
+      "age": %random_int(20, 50)%
+    }
 # A POST method that returns a 500. Great for testing error pages.
 - method: POST
   path: test/employee
@@ -100,7 +105,7 @@ An example of making a `curl` request to our second endpoint defined above:
 < content-length: 52
 < content-type: application/json
 < 
-{ "first_name": "Geoffrey", "last_name": "Greeley" }
+{ "first_name": "Geoffrey", "last_name": "Greeley", "age": 28 }
 ```
 
 No need to restart **apyr** after editing `endpoints.yaml`- it's all taken care of!
@@ -111,8 +116,9 @@ No need to restart **apyr** after editing `endpoints.yaml`- it's all taken care 
 
 Currently supported functions are:
 
-| Name | Description |
-| :--- | :--- |
-| `%random_first_name%` | Will be replaced by a random first name | 
-| `%random_last_name%` | Will be replaced by a random last name |
+| Name | Parameters | Description | Examples |
+| :--- | :--- | :--- | :--- |
+| `%random_first_name(gender)%` | `gender`: Optional string. Can be `male` or `female`. If left empty, will default to both | Will be replaced by a random first name | `%random_first_name(male)%`, `%random_first_name(female)%`, `%random_first_name()%`
+| `%random_last_name()%` | | Will be replaced by a random last name | `%random_last_name()%` |
+| `%random_int(start, end)%` | `start`: Required int, `end`: Required int | Will be replaced by a random integer between `start` and `end` | `%random_int(0, 20)%`, `%random_int(20, 50)%` |
 

@@ -1,22 +1,22 @@
 from pathlib import Path
 from typing import List
 
-import names
 import yaml
+from fastapi import HTTPException
 from starlette.responses import Response
 
-from apyr.exceptions import TooManyEndpointsException, NoEndpointsException
-from apyr.models import ContentFunction, Endpoint
+from apyr.exceptions import (
+    TooManyEndpointsException,
+    NoEndpointsException,
+    FunctionException,
+)
+from apyr.function_handler import FunctionHandler
+from apyr.functions import FUNCTIONS
+from apyr.models import Endpoint
 from apyr.utils import get_project_root, get_digest
-
-FUNCTIONS = [
-    ContentFunction(name="random_first_name", returns=names.get_first_name),
-    ContentFunction(name="random_last_name", returns=names.get_last_name),
-]
 
 
 class EndpointsRepo:
-
     def __init__(self):
         self.last_hash: str = ""
         self.endpoints: List[Endpoint] = []
@@ -27,16 +27,6 @@ class EndpointsRepo:
         endpoints = yaml.full_load(stream)
 
         self.endpoints = [Endpoint(**endpoint) for endpoint in endpoints]
-
-    @staticmethod
-    def _check_for_functions(content: str) -> str:
-        for function in FUNCTIONS:
-            full_fun_name = f"%{function.name}%"
-            if full_fun_name in content:
-                return_val = function.returns()
-                content = content.replace(full_fun_name, return_val)
-
-        return content
 
     def _check_if_file_changed(self, path: Path) -> bool:
         """Check to see if the file changed.
@@ -67,7 +57,13 @@ class EndpointsRepo:
 
         filtered_endpoint = filtered[0]
 
-        content = self._check_for_functions(filtered_endpoint.content)
+        try:
+            content = FunctionHandler.run(filtered_endpoint.content, FUNCTIONS)
+        except FunctionException as ex:
+            raise HTTPException(
+                status_code=500, detail={"error": ex.error, "reason": ex.detail}
+            ) from ex
+
         return Response(
             status_code=filtered_endpoint.status_code,
             media_type=filtered_endpoint.media_type,

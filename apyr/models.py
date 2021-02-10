@@ -1,6 +1,6 @@
 # pylint: disable=no-name-in-module
 from enum import Enum
-from typing import Optional, Callable
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -25,5 +25,6 @@ class Endpoint(BaseModel):
 
 
 class ContentFunction(BaseModel):
+    full: str
     name: str
-    returns: Callable[[], str]
+    params: List[str]

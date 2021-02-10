@@ -22,7 +22,7 @@ def endpoints_dependency() -> EndpointsRepo:
 @endpoint_router.trace("/{path:path}")
 @endpoint_router.patch("/{path:path}")
 async def all_endpoints(
-        path: str, request: Request, repo: EndpointsRepo = Depends(endpoints_dependency)
+    path: str, request: Request, repo: EndpointsRepo = Depends(endpoints_dependency)
 ):
     try:
         response = repo.get_response(path, request.method)

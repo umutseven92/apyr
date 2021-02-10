@@ -9,11 +9,16 @@
       { "first_name": "Egon", "last_name": "Spengler" },
     ]
 # A GET method that returns an employee.
-# Take note of the two %functions%- the employee's first and last names will be random at every response.
+# Take note of the two %functions%- the employee's first name, last name and age will be random at every response.
 - method: GET
   path: test/employee/2
   status_code: 200
-  content: '{ "first_name": "%random_first_name%", "last_name": "%random_last_name%" }'
+  content: >
+    {
+      "first_name": "%random_first_name(female)%",
+      "last_name": "%random_last_name()%",
+      "age": %random_int(20, 50)%
+    }
 # A POST method that returns a 500. Great for testing error pages.
 - method: POST
   path: test/employee
