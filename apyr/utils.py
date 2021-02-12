@@ -17,3 +17,8 @@ def get_digest(file_path: str) -> str:
             hash_256.update(chunk)
 
     return hash_256.hexdigest()
+
+
+def load_file(file_path: str) -> str:
+    with open(file_path, "r") as file:
+        return file.read()

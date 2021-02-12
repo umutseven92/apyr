@@ -13,7 +13,7 @@ from apyr.exceptions import (
 from apyr.function_handler import FunctionHandler
 from apyr.functions import FUNCTIONS
 from apyr.models import Endpoint
-from apyr.utils import get_project_root, get_digest
+from apyr.utils import get_project_root, get_digest, load_file
 
 
 class EndpointsRepo:
@@ -57,8 +57,20 @@ class EndpointsRepo:
 
         filtered_endpoint = filtered[0]
 
+        if filtered_endpoint.content is None and filtered_endpoint.content_path is None:
+            return Response(
+                status_code=filtered_endpoint.status_code,
+            )
+
+        content: str = ""
+        if filtered_endpoint.content:
+            content = filtered_endpoint.content
+        elif filtered_endpoint.content_path:
+            full_path = get_project_root().joinpath(filtered_endpoint.content_path)
+            content = load_file(str(full_path))
+
         try:
-            content = FunctionHandler.run(filtered_endpoint.content, FUNCTIONS)
+            body = FunctionHandler.run(content, FUNCTIONS)
         except FunctionException as ex:
             raise HTTPException(
                 status_code=500, detail={"error": ex.error, "reason": ex.detail}
@@ -67,5 +79,5 @@ class EndpointsRepo:
         return Response(
             status_code=filtered_endpoint.status_code,
             media_type=filtered_endpoint.media_type,
-            content=content,
+            content=body,
         )

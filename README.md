@@ -25,14 +25,14 @@ poetry install # Install dependencies
 poetry run apyr # Run apyr
 ```
 
+Port can be set by `-p PORT`. The default port is `8000`.
+
 ### Via Docker
 
 ```bash
 cd apyr
 docker-compose up --build -d
 ```
-
-By default, **apyr** will run on `0.0.0.0:8000`.
 
 ## Configuration
 
@@ -45,7 +45,10 @@ it.
 | `path`        | ✅       | | Path to the endpoint, appended to the base URL | |
 | `status_code` | ✅       | | [Status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) of the response |
 | `media_type`  | ❌       | `application/json` | [Mime Type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#important_mime_types_for_web_developers) of the response |
-| `content`     | ❌       | | Body of the response |
+| `content`<sup>†</sup>     | ❌       | | Body of the response |
+| `content_path`<sup>†</sup>     | ❌       | |  Path to the response body |
+
+<sup>†</sup> Both `content` and `content_path` can't be set at the same time.
 
 ### Example endpoints.yaml
 
@@ -77,6 +80,10 @@ it.
   media_type: text
   status_code: 500
   content: An unexpected error occured while creating the employee.
+# A PUT method that returns a 201. Does not return a body- content is optional.
+- method: PUT
+  path: test/employee/3
+  status_code: 201
 # A GET method that returns an HTML page.
 - method: GET
   path: test/help
@@ -90,6 +97,12 @@ it.
      <p>Ghostbusters, whaddya want.</p>
      </body>
      </html>
+# The same method as above, but the content is referenced from another file. Path is relative to project root.
+- method: GET
+  path: test/help2
+  status_code: 200
+  media_type: text/html
+  content_path: assets/help.html
 ```
 
 ### Example usage

@@ -25,6 +25,10 @@
   media_type: text
   status_code: 500
   content: An unexpected error occured while creating the employee.
+# A PUT method that returns a 201. Does not return a body- content is optional.
+- method: PUT
+  path: test/employee/3
+  status_code: 201
 # A GET method that returns an HTML page.
 - method: GET
   path: test/help
@@ -38,4 +42,9 @@
      <p>Ghostbusters, whaddya want.</p>
      </body>
      </html>
-
+# The same method as above, but the content is referenced from another file. Path is relative to project root.
+- method: GET
+  path: test/help2
+  status_code: 200
+  media_type: text/html
+  content_path: assets/help.html
