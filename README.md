@@ -25,8 +25,6 @@ poetry install # Install dependencies
 poetry run apyr # Run apyr
 ```
 
-Port can be set by `-p PORT`. The default port is `8000`.
-
 ### Via Docker
 
 ```bash
@@ -133,5 +131,8 @@ Currently supported functions are:
 | :--- | :--- | :--- | :--- |
 | `%random_first_name(gender)%` | `gender`: Optional string. Can be `male` or `female`. If left empty, will default to both | Will be replaced by a random first name | `%random_first_name(male)%`, `%random_first_name(female)%`, `%random_first_name()%`
 | `%random_last_name()%` | | Will be replaced by a random last name | `%random_last_name()%` |
-| `%random_int(start, end)%` | `start`: Required int, `end`: Required int | Will be replaced by a random integer between `start` and `end` | `%random_int(0, 20)%`, `%random_int(20, 50)%` |
+| `%random_int(start, end)%` | `start`: Required int, `end`: Required int | Will be replaced by a random integer between `start` and `end` (both inclusive) | `%random_int(0, 20)%`, `%random_int(20, 50)%` |
 
+## Contributing
+
+If you like this project, please consider [donating to the Electronic Frontier Foundation](https://supporters.eff.org/donate). 

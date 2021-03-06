@@ -25,13 +25,15 @@ class Endpoint(BaseModel):
     content_path: Optional[str]
 
     @validator("content_path", pre=True, always=True)
-    def content_path_correct(cls, value, values):  # pylint:disable=no-self-argument, no-self-use
+    def content_path_correct(
+        cls, value, values
+    ):  # pylint:disable=no-self-argument, no-self-use
         if values["content"] is not None and value is not None:
             raise ValueError("Cannot set both content and content_path.")
         return value
 
 
 class ContentFunction(BaseModel):
-    full: str
-    name: str
-    params: List[str]
+    full: str  # E.g. %random_first_name(female)%
+    name: str  # E.g. random_first_name
+    params: List[str]  # E.g. female

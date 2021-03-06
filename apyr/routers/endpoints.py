@@ -1,3 +1,5 @@
+""" Endpoints that are defined by user. """
+
 from functools import lru_cache
 
 from fastapi import APIRouter, Depends, Request, HTTPException
@@ -8,7 +10,7 @@ from apyr.exceptions import EndpointException
 endpoint_router = APIRouter()
 
 
-@lru_cache
+@lru_cache()
 def endpoints_dependency() -> EndpointsRepo:
     return EndpointsRepo()
 

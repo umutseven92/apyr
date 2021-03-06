@@ -6,7 +6,7 @@
     [
       { "first_name": "Peter", "last_name": "Venkman" },
       { "first_name": "Ray", "last_name": "Stantz" },
-      { "first_name": "Egon", "last_name": "Spengler" },
+      { "first_name": "Egon", "last_name": "Spengler" }
     ]
 # A GET method that returns an employee.
 # Take note of the two %functions%- the employee's first name, last name and age will be random at every response.
@@ -24,7 +24,7 @@
   path: test/employee
   media_type: text
   status_code: 500
-  content: An unexpected error occured while creating the employee.
+  content: An unexpected error occurred while creating the employee.
 # A PUT method that returns a 201. Does not return a body- content is optional.
 - method: PUT
   path: test/employee/3
@@ -34,14 +34,14 @@
   path: test/help
   status_code: 200
   media_type: text/html
-  content: >
+  content: |-
     <!DOCTYPE html>
-     <html>
-     <body>
-     <h1>I've quit better jobs than this.</h1>
-     <p>Ghostbusters, whaddya want.</p>
-     </body>
-     </html>
+    <html>
+      <body>
+        <h1>I've quit better jobs than this.</h1>
+        <p>Ghostbusters, whaddya want.</p>
+      </body>
+    </html>
 # The same method as above, but the content is referenced from another file. Path is relative to project root.
 - method: GET
   path: test/help2
